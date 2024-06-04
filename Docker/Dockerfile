@@ -52,6 +52,11 @@ RUN cd /catkin_ws/src && \
     apt-get install -y ros-noetic-rqt-controller-manager && \
     apt-get install -y python3-tk
 
+# For monitoring keyboard inputs
+RUN apt-get install -y kbd && \
+pip install keyboard && \
+pip install pynput
+
 # Dependencies layer # PCL and VTK and Pyvista and Halcon
 RUN apt-get update -y && \
     apt-get install -y libvtk7-dev python3-vtk7 && \

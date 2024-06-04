@@ -3,19 +3,18 @@ import rospy
 import rospkg
 from sensor_msgs.msg import PointCloud2
 import sensor_msgs.point_cloud2 as pc2
-from std_msgs.msg import Int32
+import std_msgs
 import numpy as np
 import pcl
 
 capture=1
 
 def msg_callback(msg):
-    if msg.data == 7:
+    if msg.data == '1':
         rospy.loginfo("获取点云")
         sub = rospy.Subscriber('/camera/depth/points', PointCloud2, point_cloud_callback,queue_size=1,buff_size=52428800)   
         rospy.sleep(0.5)
         sub.unregister()
-        
 
 def point_cloud_callback(msg):
     # Convert PointCloud2 message to numpy array
@@ -40,7 +39,7 @@ def save_as_pcd(points):
 
 def main():
     rospy.init_node('point_cloud_saver', anonymous=True)
-    rospy.Subscriber("chatter", Int32, msg_callback)
+    rospy.Subscriber("obtain_pcd", std_msgs.msg.String, msg_callback)
     # Replace 'your_point_cloud_topic' with the actual topic name
     rospy.spin()
 

@@ -41,15 +41,11 @@ def construct_pose(position, angle, frame_id = "base_link") -> geometry_msgs.msg
     return robot_pose
 def moverobot(rotation_matrix, pose_grasp, pose_pre_grasp, frame_id = "base_link") -> geometry_msgs.msg.Pose:
 
-    #######GZ
     base2baselink =  np.array([[ 1,  0, 0],
                             [0,  1,  0],
                             [0, 0, 1]])
-    #######GZ
     ## Construct robotiq_controller
     gripper = gripper_2F85()
-    # gripper.reset()
-    # gripper.activate()
     gripper.open()
     
     ur = UR_robot()
@@ -71,11 +67,6 @@ def moverobot(rotation_matrix, pose_grasp, pose_pre_grasp, frame_id = "base_link
     # Up pose
     up_position = [(pose_pre_grasp[0]+offset[0])/1000,(pose_pre_grasp[1]+offset[1])/1000,(pose_pre_grasp[2]+offset[2])/1000]
     up_pose = construct_pose(up_position[0:3], rot_angle[0:3], frame_id='base_link')
-
-
-    print("#################")
-    print("The up_pose is:", up_pose)
-    print("#################")
 
     # Drop pose
     rot_mat2 = np.array([[ -0.8426062,  0.5372024, -0.0377938],

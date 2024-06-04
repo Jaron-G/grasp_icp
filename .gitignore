@@ -1,0 +1,8 @@
+/src/downloads
+/.vscode
+/pcd
+/.vscode/
+/src/main/__pycache__
+/src/main/.vscode/
+
+src/Halcon/halcon_registration.py

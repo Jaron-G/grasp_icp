@@ -1,0 +1,5 @@
+<launch>
+    <!-- GZ:start the robot in gazebo -->
+    <include file="$(find pkg_ur10e_gripper_moveit)/launch/demo_gazebo.launch">
+    </include>
+</launch>

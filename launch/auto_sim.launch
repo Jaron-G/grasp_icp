@@ -1,0 +1,19 @@
+<launch>
+    <!-- start the robot -->
+    <include file="$(find grasp_icp)/launch/UR_robot_sim.launch"> </include> 
+
+    <!-- Load the model parameters onto the parameter server -->
+    <rosparam command="load" file="$(find grasp_icp)/config/model_list.yaml" />
+
+    <!-- start the talker -->
+    <node pkg="grasp_icp" type="auto_talker" name="auto_talker" output="screen"> </node>
+    <!-- start the listener -->
+    <node pkg="grasp_icp" type="listener" name="listener" output="screen"> </node>
+    
+    <!-- start the kinect_obtain_pcd -->
+    <node pkg="grasp_icp" type="obtain_pcd.py" name="kinect_sim" output="screen"> </node>
+    
+    <!-- start robot grasping -->
+    <node pkg="grasp_icp" type="main_process.py" name="Grasping" output="screen"> </node>
+
+</launch>

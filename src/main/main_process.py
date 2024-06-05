@@ -1,14 +1,22 @@
 #!/usr/bin/env python3
 import rospy
-import std_msgs
 import keyboard
-# from halcon_registration import Registration
-# from PoseTransformation import PoseTrans
+
 from grasp import moverobot
 import numpy as np
 
+from obtain_pcd.srv import * 
 from halcon_package.srv import * 
 from pose_transformation.srv import PoseTransform,PoseTransformResponse
+
+def obtain_pcd_client():
+    rospy.wait_for_service('obtain_pcd')
+    try:
+        obtain_pcd = rospy.ServiceProxy('obtain_pcd', ObtainPcd)
+        resp1 = obtain_pcd()
+        return resp1
+    except rospy.ServiceException as e:
+        print("Service call failed: %s"%e)
 
 def registration_client():
     rospy.wait_for_service('registration')
@@ -29,14 +37,11 @@ def pose_transformation_client(x, y):
         print("Service call failed: %s"%e)
 
 def main_process():
-    rospy.init_node('main_process')
-    pub = rospy.Publisher('obtain_pcd', std_msgs.msg.String, queue_size=10)
-    rate = rospy.Rate(10)  # 10hz
-
     while not rospy.is_shutdown():
-        if keyboard.is_pressed('1'):
-            pub.publish('1')
-            rospy.loginfo("Obtain pointcloud !")
+        if  keyboard.is_pressed('1'):
+            rospy.loginfo("Start btain pointcloud !")
+            response = obtain_pcd_client()
+            rospy.loginfo("Obtain pointcloud completed!")
         elif keyboard.is_pressed('2'):
             rospy.loginfo("Start perform registration !")
             response = registration_client()
@@ -53,8 +58,8 @@ def main_process():
             rospy.loginfo("Grasp completed !")
         else:
             pass
-        rate.sleep()
         
 if __name__ == '__main__':
+    rospy.init_node('main_process')
     main_process()
     rospy.spin()

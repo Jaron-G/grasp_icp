@@ -54,8 +54,8 @@ RUN cd /catkin_ws/src && \
 
 # For monitoring keyboard inputs
 RUN apt-get install -y kbd && \
-pip install keyboard && \
-pip install pynput
+    pip install keyboard && \
+    pip install pynput
 
 # Dependencies layer # PCL and VTK and Pyvista and Halcon
 RUN apt-get update -y && \
@@ -69,6 +69,32 @@ RUN apt-get update -y && \
     pip install mvtec-halcon==23050 &&\
     pip install transforms3d && \
     pip install scipy
+
+# The subfunctional packages that grasp_icp depends on
+RUN cd /catkin_ws/src && \
+    git clone https://github.com/Jaron-G/robotiq_gripper.git && \
+    git clone https://github.com/Jaron-G/ur10e_gripper.git && \
+    git clone https://github.com/Jaron-G/ur10e_gripper_moveit.git && \
+    git clone https://github.com/Jaron-G/models.git && \
+    git clone https://github.com/Jaron-G/obtain_pcd.git && \
+    git clone https://github.com/Jaron-G/pose_transformation.git && \
+    git clone https://github.com/Jaron-G/move_robot.git && \
+    git clone -b base_on_srv https://github.com/OneOneLiu/halcon_package.git
+
+#  Add gazebo grasp plugin: Grasp_fix
+RUN cd /catkin_ws/src && \
+    git clone -b noetic https://github.com/JenniferBuehler/gazebo-pkgs.git && \
+    git clone https://github.com/JenniferBuehler/general-message-pkgs.git && \
+    cd /catkin_ws/src/gazebo-pkgs/gazebo_grasp_plugin/ && \
+    sed -i '/project(/a set(CMAKE_CXX_STANDARD 17)' CMakelists.txt && \
+    cd /catkin_ws/src/gazebo-pkgs/gazebo_grasp_plugin_ros/ && \
+    sed -i '/project(/a set(CMAKE_CXX_STANDARD 17)' CMakelists.txt && \
+    cd /catkin_ws/src/gazebo-pkgs/gazebo_state_plugins/ && \
+    sed -i '/project(/a set(CMAKE_CXX_STANDARD 17)' CMakelists.txt && \
+    cd /catkin_ws/src/gazebo-pkgs/gazebo_version_helpers/ && \
+    sed -i '/project(/a set(CMAKE_CXX_STANDARD 17)' CMakelists.txt && \
+    cd /catkin_ws/src/gazebo-pkgs/gazebo_world_plugin_loader/ && \
+    sed -i '/project(/a set(CMAKE_CXX_STANDARD 17)' CMakelists.txt
 
 ## Set halcon environment variables
 ENV HALCONROOT="/opt/MVTec/HALCON-23.05-Progress"

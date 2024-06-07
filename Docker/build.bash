@@ -1,1 +1,1 @@
-docker build . -t ros-noetic-grasp-fix
+docker build . -t ros-noetic-industrial-grasp-demo 

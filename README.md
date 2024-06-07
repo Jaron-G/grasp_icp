@@ -56,3 +56,11 @@ bash install.bash
 ```bash
  roslaunch grasp_icp manual_sim.launch 
 ```
++ After starting, the robot in Gazebo is in a paused state. Click on the play button in the bottom left corner of Gazebo, and then use the button to control the robot to grasp.
+    > 1: Obtain point cloud 
+    >
+    > 2: Registration 
+    >
+    > 3: Pose transformation
+    > 
+    > 4: Execute grasping

@@ -86,15 +86,15 @@ RUN cd /catkin_ws/src && \
     git clone -b noetic https://github.com/JenniferBuehler/gazebo-pkgs.git && \
     git clone https://github.com/JenniferBuehler/general-message-pkgs.git && \
     cd /catkin_ws/src/gazebo-pkgs/gazebo_grasp_plugin/ && \
-    sed -i '/project(/a set(CMAKE_CXX_STANDARD 17)' CMakelists.txt && \
+    sed -i '/project(/a set(CMAKE_CXX_STANDARD 17)' CMakeLists.txt && \
     cd /catkin_ws/src/gazebo-pkgs/gazebo_grasp_plugin_ros/ && \
-    sed -i '/project(/a set(CMAKE_CXX_STANDARD 17)' CMakelists.txt && \
+    sed -i '/project(/a set(CMAKE_CXX_STANDARD 17)' CMakeLists.txt && \
     cd /catkin_ws/src/gazebo-pkgs/gazebo_state_plugins/ && \
-    sed -i '/project(/a set(CMAKE_CXX_STANDARD 17)' CMakelists.txt && \
+    sed -i '/project(/a set(CMAKE_CXX_STANDARD 17)' CMakeLists.txt && \
     cd /catkin_ws/src/gazebo-pkgs/gazebo_version_helpers/ && \
-    sed -i '/project(/a set(CMAKE_CXX_STANDARD 17)' CMakelists.txt && \
+    sed -i '/project(/a set(CMAKE_CXX_STANDARD 17)' CMakeLists.txt && \
     cd /catkin_ws/src/gazebo-pkgs/gazebo_world_plugin_loader/ && \
-    sed -i '/project(/a set(CMAKE_CXX_STANDARD 17)' CMakelists.txt
+    sed -i '/project(/a set(CMAKE_CXX_STANDARD 17)' CMakeLists.txt
 
 ## Set halcon environment variables
 ENV HALCONROOT="/opt/MVTec/HALCON-23.05-Progress"

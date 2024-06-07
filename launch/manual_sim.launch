@@ -2,12 +2,12 @@
     <!-- start the robot simulation grasp environment-->
     <include file="$(find grasp_icp)/launch/UR_robot_sim.launch"> </include> 
     
-    <!-- Load  pose transformation and registration server-->
+    <!-- Load grasping submodule services-->
     <include file="$(find obtain_pcd)/launch/obtain_pcd.launch"> </include> 
     <include file="$(find pose_transformation)/launch/pose_transform.launch"> </include> 
     <include file="$(find halcon_package)/launch/registration.launch"> </include> 
-
+    <include file="$(find move_robot)/launch/move_robot.launch"> </include> 
+    
     <!-- start robot grasping main process-->
     <node pkg="grasp_icp" type="main_process.py" name="Grasping" output="screen"> </node>
-
 </launch>

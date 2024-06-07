@@ -15,6 +15,7 @@ docker run --rm -it \
     --volume="/home/$USER/catkin_ws/src/halcon_package:/catkin_ws/src/halcon_package" \
     --volume="/home/$USER/catkin_ws/src/pose_transformation:/catkin_ws/src/pose_transformation" \
     --volume="/home/$USER/catkin_ws/src/obtain_pcd:/catkin_ws/src/obtain_pcd" \
+    --volume="/home/$USER/catkin_ws/src/move_robot:/catkin_ws/src/move_robot" \
     --volume="/dev/bus/usb:/dev/bus/usb" \
     --net=host \
     --privileged \

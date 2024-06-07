@@ -2,12 +2,10 @@
 import rospy
 import keyboard
 
-from grasp import moverobot
-import numpy as np
-
-from obtain_pcd.srv import * 
-from halcon_package.srv import * 
-from pose_transformation.srv import PoseTransform,PoseTransformResponse
+from obtain_pcd.srv import ObtainPcd
+from halcon_package.srv import RegistratePose
+from pose_transformation.srv import PoseTransform
+from move_robot.srv import MoveToPose
 
 def obtain_pcd_client():
     rospy.wait_for_service('obtain_pcd')
@@ -36,6 +34,15 @@ def pose_transformation_client(x, y):
     except rospy.ServiceException as e:
         print("Service call failed: %s"%e)
 
+def move_robot_to_pose_client(x, y, z):
+    rospy.wait_for_service('move_to_pose_service')
+    try:
+        move_to_pose = rospy.ServiceProxy('move_to_pose_service', MoveToPose)
+        resp1 = move_to_pose(x, y, z)
+        return resp1.success
+    except rospy.ServiceException as e:
+        rospy.logerr("Service call failed: %s"%e)
+
 def main_process():
     while not rospy.is_shutdown():
         if  keyboard.is_pressed('1'):
@@ -50,12 +57,15 @@ def main_process():
         elif keyboard.is_pressed('3'):
             rospy.loginfo("Pose transformation !")
             response = pose_transformation_client(final_pose, matched_model)
-            rotation_matrix,pose_g, pose_up = np.array(response.rotation_matrix).reshape(3,3), np.array(response.grasp_pose), np.array(response.up_pose)
+            rotation_matrix,pose_g, pose_up = response.rotation_matrix, response.grasp_pose, response.up_pose
             rospy.loginfo("Pose transformation completed !")
         elif keyboard.is_pressed('4'):
             rospy.loginfo("Start grasp !")
-            moverobot(rotation_matrix,pose_g, pose_up, frame_id="base_link")
-            rospy.loginfo("Grasp completed !")
+            result = move_robot_to_pose_client(rotation_matrix, pose_g, pose_up)
+            if result:
+                rospy.loginfo("Robot moved successfully!")
+            else:
+                rospy.loginfo("Failed to move robot.")
         else:
             pass
         

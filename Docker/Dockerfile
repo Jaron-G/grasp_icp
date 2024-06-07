@@ -87,7 +87,7 @@ RUN cd /catkin_ws/src && \
     git clone https://github.com/JenniferBuehler/general-message-pkgs.git && \
     cd /catkin_ws/src/gazebo-pkgs/gazebo_grasp_plugin/ && \
     sed -i '/project(/a set(CMAKE_CXX_STANDARD 17)' CMakeLists.txt && \
-    cd /catkin_ws/src/gazebo-pkgs/gazebo_grasp_plugin_ros/ && \
+    cd /catkin_ws/src/gazebo-pkgs/gazebo_test_tools/ && \
     sed -i '/project(/a set(CMAKE_CXX_STANDARD 17)' CMakeLists.txt && \
     cd /catkin_ws/src/gazebo-pkgs/gazebo_state_plugins/ && \
     sed -i '/project(/a set(CMAKE_CXX_STANDARD 17)' CMakeLists.txt && \

@@ -20,14 +20,39 @@ Follow the [`readme.md`](./Docker/readme.md) in `./Docker` to create the correct
 >
 > All of these dependencies have been installed in the docker environment.
 
-## 3. Start grasp simulation
-### 3.1 Install Halcon
+
+### 2.3 Download software source file
+The Haclon installation package should be located in `grasp/src/downloads`
+
+Download software source file and save it to the `downloads/` folder in this package (untracked). The folder should be like this after that:
+
+```bash{.line-numbers}
+downloads/
+└── halcon-23.05.0.0-x64-linux
+    ├── readme.txt
+    ├── repository
+    │   └── packages.mvtec.com
+    │       ├── ai_acc
+    │       ├── halcon
+    │       │   └── halcon-23.05-progress
+0-deep-learning-core-x64-win64_x64-linux_aarch64-linux_armv7a-linux.zip
+    │       │
+    │       ├── interfaces
+    │       ├── som.catalog
+    │       └── som.catalog.asc
+    ├── som
+    ├── som-register.sh
+    └── som.png
+```
+ ### 2.4 Install Halcon
+
 ```bash
 cd catkin_ws/src/grasp_icp/
 cd src/Halcon/
 bash install.bash
 ```
-### 3.2 Start manual grasp simulation
+
+## 3. Start grasp simulation
 ```bash
  roslaunch grasp_icp manual_sim.launch 
 ```

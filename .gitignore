@@ -7,5 +7,4 @@
 src/Halcon/halcon_registration.py
 pcd/scence_gazebo.pcd
 pcd/scence_gazebo.ply
-pcd/coord.STL
 

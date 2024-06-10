@@ -9,6 +9,6 @@ docker run --rm -it \
     --volume="/dev/bus/usb:/dev/bus/usb" \
     --net=host \
     --privileged \
-    ros-noetic-industrial-grasp-demo2 \
+    ros-noetic-industrial-grasp-demo \
     bash
 echo "Done."

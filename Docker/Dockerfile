@@ -1,4 +1,4 @@
-FROM osrf/ros:noetic-desktop-full
+FROM do.nark.eu.org/osrf/ros:noetic-desktop-full
 # Set the environment variable to non-interactive, this is to avoid the tzdata configuration during the installation of the packages
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -40,11 +40,6 @@ RUN mkdir -p /catkin_ws/src && \
     apt install ros-noetic-rqt-controller-manager && \
     apt-get install -y python3-tk && \
     apt-get install -y ros-noetic-ros-control ros-noetic-ros-controllers
-
-# For monitoring keyboard inputs
-RUN apt-get install -y kbd && \
-    pip install keyboard && \
-    pip install pynput
 
 # Dependencies layer # PCL and VTK and Pyvista and Halcon
 RUN apt-get update -y && \

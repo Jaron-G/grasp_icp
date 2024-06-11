@@ -7,6 +7,8 @@ from halcon_package.srv import RegistratePose
 from pose_transformation.srv import PoseTransform
 from move_robot.srv import MoveToPose
 
+DEBUG = False
+
 def obtain_pcd_client():
     rospy.wait_for_service('obtain_pcd')
     try:
@@ -16,11 +18,11 @@ def obtain_pcd_client():
     except rospy.ServiceException as e:
         print("Service call failed: %s" % e)
 
-def registration_client():
+def registration_client(debug_mode):
     rospy.wait_for_service('registration')
     try:
         registration = rospy.ServiceProxy('registration', RegistratePose)
-        resp1 = registration()
+        resp1 = registration(debug_mode)
         return resp1
     except rospy.ServiceException as e:
         rospy.logerr("Service call failed: %s" % e)
@@ -79,26 +81,38 @@ class Application(tk.Frame):
         self.message_box = tk.Label(self.frame1, textvariable=self.message_var, bg='lightblue',width=28)
         self.message_box.pack(pady=5)
 
+        self.debug_var = tk.IntVar()
+        self.debug_checkbox = tk.Checkbutton(self, text="Debug Mode", variable=self.debug_var, command=self.debug_check)
+        self.debug_checkbox.pack()
+
         self.frame1.pack(side="left")  # 左框架对齐
         self.frame2.pack(side="right")  # 右框架对齐
 
+    # 在终端打印当前模式信息
+    def debug_check(self):
+        if  self.debug_var.get()==1 :
+            print("Start debug mode !") 
+        else:
+            print("Start normal mode !")
+
     def press_obtain_pcd_button(self):
-        print("Start obtain point cloud !")
         rospy.loginfo("Start obtain point cloud !")
         response = obtain_pcd_client()
         rospy.loginfo("Obtain point cloud completed!")
         self.message_var.set("Obtain point cloud completed!")
 
     def press_registration_button(self):
-        print("Start perform registration !")
         rospy.loginfo("Start perform registration !")
-        response = registration_client()
+        if self.debug_var.get() == 1:
+            debug_mode = True
+        else:
+            debug_mode = False
+        response = registration_client(debug_mode)
         self.final_pose, self.matched_model = response.final_pose, response.matched_model
         rospy.loginfo("Registration completed !")
         self.message_var.set("Registration completed !")
 
     def press_pose_transformation_button(self):
-        print("Pose transformation !")
         rospy.loginfo("Pose transformation !")
         response = pose_transformation_client(self.final_pose, self.matched_model)
         self.rotation_matrix, self.pose_g, self.pose_up = response.rotation_matrix, response.grasp_pose, response.up_pose
@@ -106,7 +120,6 @@ class Application(tk.Frame):
         self.message_var.set("Pose transformation completed !")
 
     def press_move_robot_button(self):
-        print("Start grasp !")
         rospy.loginfo("Start grasp !")
         result = move_robot_to_pose_client(self.rotation_matrix, self.pose_g, self.pose_up)
         if result:
@@ -118,7 +131,7 @@ class Application(tk.Frame):
 def main():
     root = tk.Tk()
     root.title('Pipe grasping based on ICP registration')
-    root.geometry('400x240')
+    root.geometry('400x270')
     app = Application(master=root)
     app.mainloop()
 

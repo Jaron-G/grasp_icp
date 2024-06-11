@@ -19,6 +19,14 @@ cd /catkin_ws/src/halcon_package && git pull
 echo "-----------------------------------------------"
 echo "Synchronization of all repositories completed."
 
+# 安装Halcon
+echo "Starting Halcon installation..."
+echo "-----------------------------------------------"
+cd /catkin_ws/src/halcon_package/Halcon_install/
+bash install.bash 
+echo "-----------------------------------------------"
+echo "Halcon installation completed."
+
 # 移动到工作空间文件夹
 cd /catkin_ws
 

@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 import rospy
+import sys
+import moveit_commander
 import tkinter as tk
 
 from obtain_pcd.srv import ObtainPcd
@@ -60,17 +62,17 @@ class Application(tk.Frame):
     def create_widgets(self):
         self.frame1 = tk.Frame(self)
         self.frame2 = tk.Frame(self)
-        self.obtain_pcd_button = tk.Button(self.frame1, text="Get scene point cloud", command=self.press_obtain_pcd_button,width=28
-                                           # , height=2,font=32
-                                           )
+        self.reset_vrobot_button = tk.Button(self.frame1, text="Reset Robot", command=self.press_reset_robot_button, width=28)
+        self.reset_vrobot_button.pack(pady=5)
+        self.obtain_pcd_button = tk.Button(self.frame1, text="Get scene point cloud", command=self.press_obtain_pcd_button, width=28)
         self.obtain_pcd_button.pack(pady=5)
-        self.registration_button = tk.Button(self.frame1, text="Perform registration", command=self.press_registration_button,width=28)
+        self.registration_button = tk.Button(self.frame1, text="Perform registration", command=self.press_registration_button, width=28)
         self.registration_button.pack(pady=5)
-        self.pose_transformation_button = tk.Button(self.frame1, text="Perform pose transformation", command=self.press_pose_transformation_button,width=28)
+        self.pose_transformation_button = tk.Button(self.frame1, text="Perform pose transformation", command=self.press_pose_transformation_button, width=28)
         self.pose_transformation_button.pack(pady=5)
-        self.move_robot_button = tk.Button(self.frame1, text="Start grasp", command=self.press_move_robot_button,width=28)
+        self.move_robot_button = tk.Button(self.frame1, text="Start grasp", command=self.press_move_robot_button, width=28)
         self.move_robot_button.pack(pady=5)
-        self.quit = tk.Button(self.frame1, text="QUIT", fg="red", command=self.master.destroy, bd=3,width=28)
+        self.quit = tk.Button(self.frame1, text="QUIT", fg="red", command=self.master.destroy, bd=3, width=28)
         self.quit.pack(pady=5)
 
         self.photo = tk.PhotoImage(file="/catkin_ws/src/grasp_icp/src/main/robot.png")
@@ -127,11 +129,29 @@ class Application(tk.Frame):
         else:
             rospy.loginfo("Failed to move robot.")
         self.message_var.set("Robot moved successfully!")
+    
+    def press_reset_robot_button(self):
+        rospy.loginfo("Reset Robot !")
+        moveit_commander.roscpp_initialize(sys.argv)
+        group_name = "manipulator"
+        move_group = moveit_commander.MoveGroupCommander(group_name)
+        joint_goal = move_group.get_current_joint_values()
+        joint_goal[0] = 0
+        joint_goal[1] = -1.544
+        joint_goal[2] = 1.544 
+        joint_goal[3] = -1.5707
+        joint_goal[4] = -1.5707
+        joint_goal[5] = -1.5707
+        move_group.go(joint_goal, wait=True)
+        move_group.stop()
+        move_group.clear_pose_targets()
+        rospy.loginfo("Reset robot successfully!")
+        self.message_var.set("Reset Robot successfully !")
 
 def main():
     root = tk.Tk()
     root.title('Pipe grasping based on ICP registration')
-    root.geometry('400x270')
+    root.geometry('400x300')
     app = Application(master=root)
     app.mainloop()
 

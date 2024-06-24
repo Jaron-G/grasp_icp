@@ -97,6 +97,7 @@ ENV LD_LIBRARY_PATH="$HALCONROOT/lib/x64-linux"
 # Use rosdep to install all dependencies according to the package.xml files in all src folders
 # And compile the workspace
 RUN cd /catkin_ws && \
+    apt-get update && \
     rosdep install --from-paths src --ignore-src -r -y && \
     /bin/bash -c '. /opt/ros/noetic/setup.bash; catkin_make'
 

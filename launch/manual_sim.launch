@@ -5,7 +5,7 @@
     <!-- Load grasping submodule services-->
     <include file="$(find obtain_pcd)/launch/obtain_pcd.launch"> </include> 
     <include file="$(find pose_transformation)/launch/pose_transform.launch"> </include> 
-    <include file="$(find halcon_package)/launch/registration.launch"> </include> 
+    <include file="$(find registration)/launch/registration.launch"> </include> 
     <include file="$(find move_robot)/launch/move_robot.launch"> </include> 
     
     <!-- start robot grasping main process-->

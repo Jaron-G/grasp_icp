@@ -5,7 +5,7 @@ import moveit_commander
 import tkinter as tk
 
 from obtain_pcd.srv import ObtainPcd
-from halcon_package.srv import RegistratePose
+from registration.srv import RegistratePose
 from pose_transformation.srv import PoseTransform
 from move_robot.srv import MoveToPose
 
@@ -21,9 +21,9 @@ def obtain_pcd_client():
         print("Service call failed: %s" % e)
 
 def registration_client(debug_mode):
-    rospy.wait_for_service('registration')
+    rospy.wait_for_service('registration_service')
     try:
-        registration = rospy.ServiceProxy('registration', RegistratePose)
+        registration = rospy.ServiceProxy('registration_service', RegistratePose)
         resp1 = registration(debug_mode)
         return resp1
     except rospy.ServiceException as e:

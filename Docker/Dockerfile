@@ -63,7 +63,8 @@ RUN cd /catkin_ws/src && \
     git clone https://github.com/Jaron-G/obtain_pcd.git && \
     git clone https://github.com/Jaron-G/pose_transformation.git && \
     git clone https://github.com/Jaron-G/move_robot.git && \
-    git clone -b base_on_srv https://github.com/OneOneLiu/halcon_package.git
+    # git clone -b base_on_srv https://github.com/OneOneLiu/halcon_package.git
+    git clone https://github.com/Jaron-G/registration.git
 
 #  Add gazebo grasp plugin: Grasp_fix
 RUN cd /catkin_ws/src && \

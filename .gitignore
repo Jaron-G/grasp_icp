@@ -10,3 +10,4 @@ pcd/scence_gazebo.ply
 
 Docker/Dockerfile（复件）
 Docker/demo2.bash
+Docker/test_demo.bash

@@ -68,18 +68,8 @@ RUN cd /catkin_ws/src && \
 
 #  Add gazebo grasp plugin: Grasp_fix
 RUN cd /catkin_ws/src && \
-    git clone -b noetic https://github.com/JenniferBuehler/gazebo-pkgs.git && \
-    git clone https://github.com/JenniferBuehler/general-message-pkgs.git && \
-    cd /catkin_ws/src/gazebo-pkgs/gazebo_grasp_plugin/ && \
-    sed -i '/project(/a set(CMAKE_CXX_STANDARD 17)' CMakeLists.txt && \
-    cd /catkin_ws/src/gazebo-pkgs/gazebo_test_tools/ && \
-    sed -i '/project(/a set(CMAKE_CXX_STANDARD 17)' CMakeLists.txt && \
-    cd /catkin_ws/src/gazebo-pkgs/gazebo_state_plugins/ && \
-    sed -i '/project(/a set(CMAKE_CXX_STANDARD 17)' CMakeLists.txt && \
-    cd /catkin_ws/src/gazebo-pkgs/gazebo_version_helpers/ && \
-    sed -i '/project(/a set(CMAKE_CXX_STANDARD 17)' CMakeLists.txt && \
-    cd /catkin_ws/src/gazebo-pkgs/gazebo_world_plugin_loader/ && \
-    sed -i '/project(/a set(CMAKE_CXX_STANDARD 17)' CMakeLists.txt
+    git clone -b noetic https://github.com/Jaron-G/gazebo-pkgs.git && \
+    git clone https://github.com/JenniferBuehler/general-message-pkgs.git
 
 # Sync the cloned repositories every time the container is started
 COPY entrypoint.sh /entrypoint.sh

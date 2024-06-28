@@ -1,4 +1,4 @@
-FROM osrf/ros:noetic-desktop-full
+FROM nvidia/cuda:12.5.0-devel-ubuntu20.04
 # Set the environment variable to non-interactive, this is to avoid the tzdata configuration during the installation of the packages
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -14,6 +14,20 @@ RUN apt-get update && \
     apt-get install -y git && \
     apt-get install -y python3-pip && \
     apt-get install -y xauth x11-apps # This is for GUI testing
+
+# Install ROS
+RUN apt-get install -y lsb-release && \
+    sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list' && \
+    apt-get install -y curl -y && \
+    curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | apt-key add - && \
+    apt update && \
+    apt install -y ros-noetic-desktop-full && \
+    /bin/bash -c '. /opt/ros/noetic/setup.bash' && \
+    apt install -y python3-rosdep python3-rosinstall python3-rosinstall-generator python3-wstool && \
+    rosdep init && \
+    rosdep update
+
+ENV ROS_DISTRO noetic
 
 # Dependencies layer # Ur_driver
 RUN mkdir -p /catkin_ws/src && \
@@ -43,20 +57,22 @@ RUN mkdir -p /catkin_ws/src && \
 
 # For monitoring keyboard inputs
 RUN apt-get install -y kbd && \
-    pip install keyboard && \
-    pip install pynput
+    pip3 install keyboard && \
+    pip3 install pynput
 
 # Dependencies layer # PCL and VTK and Pyvista and Halcon
 RUN apt-get update -y && \
     apt-get install -y libvtk7-dev python3-vtk7 && \
     apt install -y libpcl-dev &&\
     apt install -y python3-pcl &&\
-    pip install numpy vtk &&\
-    pip install pyvista && \
-    pip install pyvistaqt meshio &&\
-    pip install mvtec-halcon==23050 &&\
-    pip install transforms3d && \
-    pip install scipy
+    apt install -y mesa-utils && \
+    pip3 install numpy vtk &&\
+    pip3 install pyvista && \
+    pip3 install pyvistaqt meshio &&\
+    pip3 install mvtec-halcon==23050 &&\
+    pip3 install transforms3d && \
+    pip3 install open3d && \
+    pip3 install scipy
 
 # Clone my custimized repositories
 RUN cd /catkin_ws/src && \
@@ -97,6 +113,7 @@ ENV LD_LIBRARY_PATH="$HALCONROOT/lib/x64-linux"
 # Use rosdep to install all dependencies according to the package.xml files in all src folders
 # And compile the workspace
 RUN cd /catkin_ws && \
+    apt-get update && \
     rosdep install --from-paths src --ignore-src -r -y && \
     /bin/bash -c '. /opt/ros/noetic/setup.bash; catkin_make'
 

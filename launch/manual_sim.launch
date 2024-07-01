@@ -3,9 +3,11 @@
     <include file="$(find grasp_icp)/launch/UR_robot_sim.launch"> </include> 
     
     <!-- Load grasping submodule services-->
-    <include file="$(find obtain_pcd)/launch/obtain_pcd.launch"> </include> 
-    <include file="$(find pose_transformation)/launch/pose_transform.launch"> </include> 
-    <include file="$(find registration)/launch/registration.launch"> </include> 
+    <node pkg="obtain_pcd" type="obtain_pcd_server.py" name="obtain_pcd_server"  output="screen" args="/catkin_ws/src/grasp_icp"> </node>
+    <!-- Load the model parameters onto the parameter server -->
+    <rosparam command="load" file="$(find grasp_icp)/config/model_list.yaml" />
+    <node name="pose_transformation_server" pkg="pose_transformation" type="pose_transformation_server.py" output="screen" args="/catkin_ws/src/grasp_icp/config/"> </node>
+    <node name="registration_server" pkg="registration" type="registration_server.py" output="screen" args="/catkin_ws/src/grasp_icp/pcd/">  </node>
     <include file="$(find move_robot)/launch/move_robot.launch"> </include> 
     
     <!-- start robot grasping main process-->

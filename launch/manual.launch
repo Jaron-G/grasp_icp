@@ -1,0 +1,16 @@
+<launch>
+    <!-- start the robot simulation grasp environment-->
+    <include file="$(find grasp_icp)/launch/UR_robot.launch"> </include> 
+    
+    <!-- Load grasping submodule services-->
+    <node pkg="projector" type="projector_server" name="projector_server_node" output="screen"> </node>
+    <node pkg="basler_camera" type="camera_node" name="camera_node" output="screen"> </node>
+    <node pkg="reconstruction" type="reconstruction_server" name="reconstruction_server_node" output="screen"> </node>
+
+    <include file="$(find pose_transformation)/launch/pose_transform.launch"> </include> 
+    <include file="$(find halcon_package)/launch/registration.launch"> </include> 
+    <include file="$(find move_robot)/launch/real_move_robot.launch"> </include> 
+
+    <!-- start robot grasping main process-->
+    <node pkg="grasp_icp" type="main_process_real.py" name="Grasping" output="screen"> </node>
+</launch>

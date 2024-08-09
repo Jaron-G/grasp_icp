@@ -1,0 +1,5 @@
+<launch>
+    <!-- GZ:start the robot in gazebo -->
+    <include file="$(find ur10e_gripper)/launch/real_robot.launch">
+    </include>
+</launch>

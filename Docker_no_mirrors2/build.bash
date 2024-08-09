@@ -1,0 +1,1 @@
+docker build . -t nvidia-ros-noetic-industrial-grasp-demo
